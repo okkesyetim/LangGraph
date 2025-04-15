@@ -1,0 +1,18 @@
+
+graph TD
+    START([Start]) --> ROUTER{Route Question}
+    ROUTER -->|Vectorstore| RETRIEVE[Retrieve Documents]
+    ROUTER -->|Web Search| WEBSEARCH[Web Search]
+    
+    RETRIEVE --> GRADE_DOCUMENTS[Grade Documents]
+    GRADE_DOCUMENTS -->|Documents Relevant| GENERATE[Generate Answer]
+    GRADE_DOCUMENTS -->|Documents Not Relevant| WEBSEARCH
+    
+    WEBSEARCH --> GENERATE
+    
+    GENERATE -->|Check Hallucinations| HALLUCINATION{Hallucination Check}
+    HALLUCINATION -->|Grounded| QUESTION_CHECK{Question Check}
+    HALLUCINATION -->|Not Grounded| GENERATE
+    
+    QUESTION_CHECK -->|Addresses Question| END([End])
+    QUESTION_CHECK -->|Doesn't Address| WEBSEARCH
